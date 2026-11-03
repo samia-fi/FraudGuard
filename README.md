@@ -1,12 +1,35 @@
-# FraudGuard – AI Fraud Detection
+# FraudGuard
 
-## 1. Project Description
+## AI-Powered Fraud Detection SaaS Platform
 
-FraudGuard is a fraud detection project designed to identify potentially fraudulent credit card transactions using Machine Learning.
+### 1. About the Project
 
-This repository contains the dataset and the data preparation stage.
+FraudGuard is a SaaS platform designed to detect and prevent fraudulent financial transactions in real time using Machine Learning and configurable business rules.
 
-## 2. Dataset
+The project is developed as part of an academic project at ENSAM Casablanca.
+
+### 2. Main Features
+
+* Real-time transaction scoring.
+* Merchant authentication using API Keys.
+* Configurable business rules.
+* Machine Learning-based fraud detection.
+* Transaction review and analyst decisions.
+* Signed webhooks and notifications.
+* Dashboard with fraud detection metrics.
+* Multi-tenant architecture.
+
+### 3. Technologies
+
+* Python
+* FastAPI
+* PostgreSQL
+* SQLAlchemy
+* Scikit-learn
+* Redis
+* Docker
+
+### 4. Dataset
 
 * Source: OpenML
 * Dataset name: creditcard
@@ -15,47 +38,53 @@ This repository contains the dataset and the data preparation stage.
 * Number of features: 29
 * Target column: Class
 
-The target column contains:
+Target values:
 
 * 0: Legitimate transaction
 * 1: Fraudulent transaction
 
-**Note:** The downloaded OpenML dataset contains V1–V28, Amount and Class. It does not contain the Time column mentioned in the project specification. This difference must be considered during the next development stages.
+**Dataset note:** The downloaded OpenML dataset contains V1–V28, Amount and Class. It does not contain the Time column mentioned in the project specification. This difference must be considered during the next development stages.
 
-## 3. Project Structure
+### 5. Data Preparation
 
-```text
-FraudGuard22/
-│
-├── data/
-│   ├── raw/
-│   │   └── creditcard.csv
-│   │
-│   └── processed/
-│       └── train_test_indices.npz
-│
-├── src/
-│   └── fraudguard_ai/
-│       ├── __init__.py
-│       └── data_preparation.py
-│
-├── models/
-├── notebooks/
-├── reports/
-│
-├── requirements.txt
-├── .gitignore
-├── .gitattributes
-└── README.md
+The data preparation stage includes:
+
+* Loading the original dataset.
+* Checking missing values and target labels.
+* Grouping identical feature rows.
+* Performing a stratified grouped Train/Test split.
+* Saving the split indices for reproducibility.
+
+Run the script from the project root:
+
+```bash
+python src/fraudguard_ai/data_preparation.py
 ```
 
-## 4. Installation
+The split uses:
+
+* 80% Training data.
+* 20% Testing data.
+* Random state: 42.
+* StratifiedGroupKFold.
+
+### 6. Train/Test Results
+
+| Description             | Training | Testing |
+| ----------------------- | -------: | ------: |
+| Transactions            |  227,845 |  56,962 |
+| Fraudulent transactions |      393 |      99 |
+| Fraud rate              |  0.1725% | 0.1738% |
+
+The dataset is highly imbalanced.
+
+### 7. Installation
 
 Clone the repository:
 
 ```bash
-git clone YOUR_REPOSITORY_URL
-cd FraudGuard22
+git clone https://github.com/samia-fi/FraudGuard.git
+cd FraudGuard
 ```
 
 Install Git LFS:
@@ -65,65 +94,64 @@ git lfs install
 git lfs pull
 ```
 
-Create and activate a virtual environment:
+Create a virtual environment:
 
 ```bash
 python -m venv .venv
 ```
 
-Windows:
+Activate it on Windows:
 
 ```bash
 .venv\Scripts\activate
 ```
 
-Install the required libraries:
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## 5. Data Preparation
+### 8. Project Structure
 
-Run the following command from the project root:
-
-```bash
-python src/fraudguard_ai/data_preparation.py
+```text
+FraudGuard/
+├── app/
+│   ├── api/
+│   ├── core/
+│   ├── db/
+│   ├── schemas/
+│   ├── services/
+│   └── main.py
+├── data/
+│   ├── raw/
+│   │   └── creditcard.csv
+│   └── processed/
+│       └── train_test_indices.npz
+├── src/
+│   └── fraudguard_ai/
+│       ├── __init__.py
+│       └── data_preparation.py
+├── tests/
+├── models/
+├── notebooks/
+├── reports/
+├── requirements.txt
+├── .gitignore
+├── .gitattributes
+└── README.md
 ```
 
-The script:
+### 9. Team
 
-* Loads the original dataset.
-* Checks missing values and target labels.
-* Groups identical feature rows.
-* Performs a stratified grouped Train/Test split.
-* Saves the indices in `data/processed/train_test_indices.npz`.
+* Backend & API
+* Machine Learning
+* Frontend & Dashboard
 
-The split uses:
+### 10. Project Status
 
-* 80% Training data
-* 20% Testing data
-* Random state: 42
-* StratifiedGroupKFold
+Currently under development.
 
-## 6. Train/Test Results
+Current completed stage in this repository: Dataset analysis and data preparation.
 
-| Description             | Training | Testing |
-| ----------------------- | -------: | ------: |
-| Transactions            |  227,845 |  56,962 |
-| Fraudulent transactions |      393 |      99 |
-| Fraud rate              |  0.1725% | 0.1738% |
-
-## 7. Important Notes
-
-* The dataset is highly imbalanced.
-* Original data is stored in `data/raw/`.
-* Train/Test indices are stored in `data/processed/`.
-* The original dataset is tracked using Git LFS.
-* The split indices can be reused to ensure reproducibility.
-
-## 8. Team Collaboration
-
-All team members should install the dependencies and download the dataset using Git LFS before running the preparation script.
-
-**Current stage:** Dataset analysis and data preparation.
+The original dataset is tracked using Git LFS. Team members should install Git LFS and download the dataset before running the preparation script.
